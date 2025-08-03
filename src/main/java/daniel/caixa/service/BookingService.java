@@ -26,7 +26,7 @@ public class BookingService {
     @Inject
     BookingMapper mapper;
 
-//    @Inject
+    //    @Inject
     @RestClient
     VehicleAPIClient vehicleAPIClient;
 
@@ -77,8 +77,8 @@ public class BookingService {
     }
 
     @Transactional
-    public void alter(Long id, BookingStatus newStatus) {
-        Booking booking = repository.findByIdOptional(id)
+    public void alter(Long bookingId, BookingStatus newStatus) {
+        Booking booking = repository.findByIdOptional(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking not found"));
 
         BookingStatus currentStatus = booking.getStatus();
@@ -89,8 +89,8 @@ public class BookingService {
         }
 
         //Alterando Status do Veiculo para AVAILABLE
-        VehicleAPIClient.Vehicle vehicle = vehicleAPIClient.findVehicleById(id);
-        vehicleAPIClient.updateStatus(id, new VehicleAPIClient.Vehicle("AVAILABLE"));
+        VehicleAPIClient.Vehicle vehicle = vehicleAPIClient.findVehicleById(booking.getVehicleId());
+        vehicleAPIClient.updateStatus(booking.getVehicleId(), new VehicleAPIClient.Vehicle("AVAILABLE"));
 
         //Alterando Status do Booking para novo Status
         booking.setStatus(newStatus);

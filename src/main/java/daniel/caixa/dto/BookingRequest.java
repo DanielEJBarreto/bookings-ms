@@ -1,8 +1,6 @@
 package daniel.caixa.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import daniel.caixa.entity.BookingStatus;
-import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +8,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-//@RegisterForReflection
 public class BookingRequest {
 
     private Long vehicleId;

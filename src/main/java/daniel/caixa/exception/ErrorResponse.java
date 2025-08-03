@@ -12,6 +12,7 @@ public class ErrorResponse {
         this.code = code;
         this.message = message;
     }
+
     public ErrorResponse(String code, String message) {
         this.timestamp = LocalDateTime.now();
         this.code = code;

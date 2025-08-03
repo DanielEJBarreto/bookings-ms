@@ -21,7 +21,7 @@ public class BookingResource {
 
     BookingService bookingService;
 
-    public BookingResource (BookingService bookingService){
+    public BookingResource(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
