@@ -49,7 +49,7 @@
 //    private BookingRequest mockBookingRequest(LocalDate start, LocalDate end) {
 //        BookingRequest request = new BookingRequest();
 //        request.setVehicleId(1L);
-//        request.setCustomerName("Daniel");
+//        request.setCustomerId("Daniel");
 //        request.setStartDate(start);
 //        request.setEndDate(end);
 //        request.setStatus(BookingStatus.CREATED);

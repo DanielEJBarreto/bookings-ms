@@ -3,6 +3,7 @@ package daniel.caixa.resource;
 import daniel.caixa.dto.AlterBookingStatusRequest;
 import daniel.caixa.dto.BookingRequest;
 import daniel.caixa.dto.BookingResponse;
+import daniel.caixa.entity.Booking;
 import daniel.caixa.service.BookingService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
@@ -35,6 +36,21 @@ public class BookingResource {
     public BookingResponse findById(@PathParam("id") Long id) {
         return bookingService.findById(id);
     }
+
+    @GET
+    @Path("/vehicle/{vehicleId}")
+    public Response getBookingByVehicleId(@PathParam("vehicleId") Long vehicleId) {
+        BookingResponse booking = bookingService.getActiveBookingByVehicleId(vehicleId);
+
+        if (booking == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("No active booking found for vehicle " + vehicleId)
+                    .build();
+        }
+
+        return Response.ok(booking).build();
+    }
+
 
     @POST
     public Response create(@Valid BookingRequest dto) {

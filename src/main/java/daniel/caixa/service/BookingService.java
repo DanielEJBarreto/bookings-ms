@@ -66,8 +66,22 @@ public class BookingService {
             throw new InvalidReservationDateException("A data de término da reserva deve ser igual ou posterior à data de início");
         }
 
-        //Alterando Status do Veiculo para RENTED
-        vehicleAPIClient.updateStatus(dto.getVehicleId(), new VehicleAPIClient.Vehicle("RENTED"));
+        // Regra 4: verificar conflito de datas de reserva
+        boolean hasConflict = repository.count(
+                "vehicleId = ?1 and status in ?2 and startDate <= ?3 and endDate >= ?4",
+                dto.getVehicleId(),
+                List.of(BookingStatus.RENTED, BookingStatus.CREATED),
+                dto.getEndDate(),
+                dto.getStartDate()
+        ) > 0;
+
+        if (hasConflict) {
+            throw new InvalidReservationDateException("Já existe uma reserva para este veículo no período informado");
+        }
+
+//        A alteração para RENTED não acontece mais no vehicle-ms
+//        //Alterando Status do Veiculo para RENTED
+//        vehicleAPIClient.updateStatus(dto.getVehicleId(), new VehicleAPIClient.Vehicle("RENTED"));
 
         // Mapeamento e persistência
         Booking entity = mapper.toEntity(dto);
@@ -95,5 +109,24 @@ public class BookingService {
         //Alterando Status do Booking para novo Status
         booking.setStatus(newStatus);
     }
+
+    public BookingResponse getActiveBookingByVehicleId(Long vehicleId) {
+        Booking booking = repository.find("vehicleId = ?1 and status = ?2", vehicleId, BookingStatus.RENTED)
+                .firstResult();
+
+        if (booking == null) return null;
+
+        BookingResponse response = new BookingResponse();
+        response.setId(booking.getId());
+        response.setVehicleId(booking.getVehicleId());
+        response.setCustomerName(booking.getCustomerId()); // Assumindo que customerId é o nome
+        response.setStartDate(booking.getStartDate());
+        response.setEndDate(booking.getEndDate());
+        response.setStatus(booking.getStatus());
+
+        return response;
+    }
+
+
 }
 

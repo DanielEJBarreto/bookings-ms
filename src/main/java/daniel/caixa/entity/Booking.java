@@ -12,7 +12,7 @@ public class Booking {
     private Long id;
 
     private Long vehicleId;
-    private String customerName;
+    private String customerId;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -35,12 +35,12 @@ public class Booking {
         this.vehicleId = vehicleId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public LocalDate getStartDate() {
