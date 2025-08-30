@@ -1,7 +1,6 @@
 package daniel.caixa.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -67,4 +66,3 @@ public class Booking {
         this.status = status;
     }
 }
-

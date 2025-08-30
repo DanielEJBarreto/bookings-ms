@@ -15,6 +15,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -43,7 +44,7 @@ public class BookingService {
     }
 
     @Transactional
-    public BookingResponse create(BookingRequest dto) {
+    public BookingResponse create(BookingRequest dto, String customerId) {
 
         VehicleAPIClient.Vehicle vehicle = vehicleAPIClient.findVehicleById(dto.getVehicleId());
 
@@ -84,7 +85,7 @@ public class BookingService {
 //        vehicleAPIClient.updateStatus(dto.getVehicleId(), new VehicleAPIClient.Vehicle("RENTED"));
 
         // Mapeamento e persistência
-        Booking entity = mapper.toEntity(dto);
+        Booking entity = mapper.toEntity(dto, customerId);
         repository.persist(entity);
         return mapper.toResponse(entity);
 
@@ -119,7 +120,7 @@ public class BookingService {
         BookingResponse response = new BookingResponse();
         response.setId(booking.getId());
         response.setVehicleId(booking.getVehicleId());
-        response.setCustomerName(booking.getCustomerId()); // Assumindo que customerId é o nome
+        response.setCustomerId(booking.getCustomerId());
         response.setStartDate(booking.getStartDate());
         response.setEndDate(booking.getEndDate());
         response.setStatus(booking.getStatus());
@@ -127,6 +128,13 @@ public class BookingService {
         return response;
     }
 
+    public List<Booking> listAllForCustomer(String customerId) {
+        return repository.findByCustomerId(customerId);
+    }
+
+    public Optional<Booking> findByIdForCustomer(Long id, String customerId) {
+        return repository.findByIdAndCustomer(id, customerId);
+    }
 
 }
 

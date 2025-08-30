@@ -3,7 +3,6 @@ package daniel.caixa.dto;
 import daniel.caixa.entity.BookingStatus;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -11,9 +10,6 @@ import java.time.LocalDate;
 public class BookingRequest {
 
     private Long vehicleId;
-
-    @NotBlank
-    private String customerName;
 
     @NotNull
     @FutureOrPresent
@@ -23,7 +19,6 @@ public class BookingRequest {
     @Future
     private LocalDate endDate;
 
-
     private BookingStatus status = BookingStatus.CREATED;
 
     public Long getVehicleId() {
@@ -32,14 +27,6 @@ public class BookingRequest {
 
     public void setVehicleId(Long vehicleId) {
         this.vehicleId = vehicleId;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 
     public LocalDate getStartDate() {
@@ -66,4 +53,3 @@ public class BookingRequest {
         this.status = status;
     }
 }
-

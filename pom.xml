@@ -97,6 +97,14 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-oidc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-keycloak-authorization</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc-client</artifactId>
         </dependency>
         <dependency>
@@ -159,6 +167,16 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <configuration>
+                    <jvmArgs>
+                        --add-opens java.base/java.lang=ALL-UNNAMED
+                    </jvmArgs>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 

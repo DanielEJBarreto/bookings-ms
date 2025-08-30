@@ -1,14 +1,13 @@
 package daniel.caixa.dto;
 
 import daniel.caixa.entity.BookingStatus;
-
 import java.time.LocalDate;
 
 public class BookingResponse {
 
     private Long id;
     private Long vehicleId;
-    private String customerName;
+    private String customerId;
     private LocalDate startDate;
     private LocalDate endDate;
     private BookingStatus status;
@@ -29,12 +28,12 @@ public class BookingResponse {
         this.vehicleId = vehicleId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public LocalDate getStartDate() {
@@ -61,4 +60,3 @@ public class BookingResponse {
         this.status = status;
     }
 }
-
