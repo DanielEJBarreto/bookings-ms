@@ -27,7 +27,7 @@ public class BookingService {
     @Inject
     BookingMapper mapper;
 
-    //    @Inject
+    @Inject
     @RestClient
     VehicleAPIClient vehicleAPIClient;
 

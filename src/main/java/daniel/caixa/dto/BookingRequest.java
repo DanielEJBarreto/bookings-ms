@@ -21,6 +21,14 @@ public class BookingRequest {
 
     private BookingStatus status = BookingStatus.CREATED;
 
+    public BookingRequest (){}
+
+    public BookingRequest (Long vehicleId, LocalDate startDate, LocalDate endDate){
+        this.vehicleId = vehicleId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public Long getVehicleId() {
         return vehicleId;
     }
