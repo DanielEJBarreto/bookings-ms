@@ -46,27 +46,6 @@ public class BookingResource {
     }
 
     @GET
-    @Path("/{id}")
-    public BookingResponse findById(@PathParam("id") Long id) {
-        return bookingService.findById(id);
-    }
-
-//    @GET
-//    @RolesAllowed("user")
-//    @Path("/vehicle/{vehicleId}")
-//    public Response getBookingByVehicleId(@PathParam("vehicleId") Long vehicleId) {
-//        BookingResponse booking = bookingService.getActiveBookingByVehicleId(vehicleId);
-//
-//        if (booking == null) {
-//            return Response.status(Response.Status.NOT_FOUND)
-//                    .entity("No active booking found for vehicle " + vehicleId)
-//                    .build();
-//        }
-//
-//        return Response.ok(booking).build();
-//    }
-
-    @GET
     @RolesAllowed("user")
     @Path("/mybookings")
     public Response listMyBookings() {
