@@ -21,12 +21,13 @@ import static org.keycloak.util.JsonSerialization.mapper;
 
 @ApplicationScoped
 @Path("/bookings")
-@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("admin")
 public class BookingResource {
 
     BookingService bookingService;
+
+    BookingResponse bookingResponse;
 
     public BookingResource(BookingService bookingService) {
         this.bookingService = bookingService;
@@ -82,7 +83,7 @@ public class BookingResource {
     public Response create(@Valid BookingRequest dto) {
         String customerId = jwt.getSubject();
         BookingResponse created = bookingService.create(dto, customerId);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity(bookingResponse).build();
     }
 
     @PATCH
