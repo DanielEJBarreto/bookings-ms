@@ -104,5 +104,49 @@ public class BookingService {
         return repository.findByCustomerId(customerId);
     }
 
-}
+    //Realiza o check-in
+    @Transactional
+    public void vehicleCheckIn(Long bookingId, String customerId) {
+        Booking booking = repository.findByIdOptional(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found"));
 
+        BookingStatus currentStatus = booking.getStatus();
+
+        // Regra 1: Só faz check-in se Criada
+        if (currentStatus != BookingStatus.CREATED) {
+            throw new InvalidReservationStatusException("Booking " + booking.getStatus() +
+                    " not available to check-in");
+        }
+
+        //Checa se o customer da reserva é o mesmo do check-in
+        if (!booking.getCustomerId().equals(customerId)) {
+            throw new InvalidCustomerException("Reservation n# " + bookingId + " not for logged customer!");
+        }
+
+        //Alterando status para ACTIVE
+        booking.setStatus(BookingStatus.ACTIVE);
+    }
+
+    //Realiza o check-out
+    @Transactional
+    public void vehicleCheckOut(Long bookingId, String customerId) {
+        Booking booking = repository.findByIdOptional(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found"));
+
+        BookingStatus currentStatus = booking.getStatus();
+
+        // Regra 1: Só faz check-out se Active
+        if (currentStatus != BookingStatus.ACTIVE) {
+            throw new InvalidReservationStatusException("Booking " + booking.getStatus() +
+                    " not available to check-out");
+        }
+
+        //Checa se o customer da reserva é o mesmo do check-out
+        if (!booking.getCustomerId().equals(customerId)) {
+            throw new InvalidCustomerException("Reservation n# " + bookingId + " not for logged customer!");
+        }
+
+        //Alterando status para ACTIVE
+        booking.setStatus(BookingStatus.FINISHED);
+    }
+}

@@ -78,5 +78,25 @@ public class BookingResource {
         return Response.ok().entity("Reserva alterada com sucesso!").build();
     }
 
+    @PATCH
+    @RolesAllowed({"admin", "user"})
+    @Path("/{id}/check-in")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response checkIn(@PathParam("id") Long id){
+        String customerId = jwt.getSubject();
+        bookingService.vehicleCheckIn(id, customerId);
+        return Response.ok().entity("Check-in iniciado com sucesso!").build();
+    }
+
+    @PATCH
+    @RolesAllowed({"admin", "user"})
+    @Path("/{id}/check-out")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response checkOut(@PathParam("id") Long id){
+        String customerId = jwt.getSubject();
+        bookingService.vehicleCheckOut(id, customerId);
+        return Response.ok().entity("Check-out realizado com sucesso!").build();
+    }
+
 }
 
