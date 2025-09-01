@@ -214,4 +214,36 @@ public class BookingIntegrationTests {
                 .statusCode(200);
     }
 
+    //Tentar fazer check-out com sucesso
+    @Test
+    @TestSecurity(user = "myuser", roles = "user")
+    void shouldCheckOut() {
+        Long bookingId = 42L;
+
+        // Simula JWT com subject "myuser"
+        Mockito.when(jwt.getSubject()).thenReturn("myuser");
+
+        // Simula reserva existente com status CREATED
+        Booking mockBooking = new Booking();
+        mockBooking.setId(bookingId);
+        mockBooking.setVehicleId(1L);
+        mockBooking.setCustomerId("myuser");
+        mockBooking.setStartDate(LocalDate.now().plusDays(1));
+        mockBooking.setEndDate(LocalDate.now().plusDays(7));
+        mockBooking.setStatus(BookingStatus.ACTIVE);
+
+        Mockito.when(bookingRepository.findByIdOptional(bookingId))
+                .thenReturn(Optional.of(mockBooking));
+
+        // Corpo da requisição PATCH
+        AlterBookingStatusRequest alterRequest = new AlterBookingStatusRequest();
+        alterRequest.setStatus(BookingStatus.FINISHED);
+
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(alterRequest)
+                .patch("/bookings/" + bookingId + "/check-out")
+                .then()
+                .statusCode(200);
+    }
 }
