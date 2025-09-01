@@ -81,11 +81,9 @@ public class BookingService {
     }
 
     @Transactional
-    public void alter(Long bookingId, BookingStatus newStatus) {
+    public void cancelBooking(Long bookingId) {
         Booking booking = repository.findByIdOptional(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking not found"));
-
-        BookingStatus currentStatus = booking.getStatus();
 
         // Regra 1: Só cancelar se Criada
         if (booking.getStatus() != BookingStatus.CREATED) {
@@ -97,7 +95,8 @@ public class BookingService {
         vehicleAPIClient.updateStatus(booking.getVehicleId(), new VehicleAPIClient.Vehicle("AVAILABLE"));
 
         //Alterando Status do Booking para novo Status
-        booking.setStatus(newStatus);
+        booking.setStatus(BookingStatus.CANCELED);
+        booking.setCanceledAt(LocalDate.now());
     }
 
     public List<Booking> listAllForCustomer(String customerId) {
@@ -125,6 +124,7 @@ public class BookingService {
 
         //Alterando status para ACTIVE
         booking.setStatus(BookingStatus.ACTIVE);
+        booking.setActivatedAt(LocalDate.now());
     }
 
     //Realiza o check-out
@@ -146,7 +146,8 @@ public class BookingService {
             throw new InvalidCustomerException("Reservation n# " + bookingId + " not for logged customer!");
         }
 
-        //Alterando status para ACTIVE
+        //Alterando status para FINISHED
         booking.setStatus(BookingStatus.FINISHED);
+        booking.setFinishedAt(LocalDate.now());
     }
 }

@@ -1,6 +1,5 @@
 package daniel.caixa.resource;
 
-import daniel.caixa.dto.AlterBookingStatusRequest;
 import daniel.caixa.dto.BookingRequest;
 import daniel.caixa.dto.BookingResponse;
 import daniel.caixa.entity.Booking;
@@ -16,8 +15,6 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.List;
-
-import static org.keycloak.util.JsonSerialization.mapper;
 
 @ApplicationScoped
 @Path("/bookings")
@@ -71,11 +68,11 @@ public class BookingResource {
 
     @PATCH
     @RolesAllowed({"admin", "user"})
-    @Path("/{id}/alter")
+    @Path("/{id}/cancelBooking")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response alter(@PathParam("id") Long id, AlterBookingStatusRequest dto) {
-        bookingService.alter(id, dto.getStatus());
-        return Response.ok().entity("Reserva alterada com sucesso!").build();
+    public Response alter(@PathParam("id") Long id) {
+        bookingService.cancelBooking(id);
+        return Response.ok().entity("Reserva cancelada com sucesso!").build();
     }
 
     @PATCH
